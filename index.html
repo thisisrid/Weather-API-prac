@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="input-city" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="search-btn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="city-name">Dhaka</h1>
+            <h3><span id="temp">38.06</span>&deg;C</h3>
+            <h1 id="sky" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+    <script>
+
+const searchBtn = document.getElementById('search-btn');
+const apiBase = 'https://api.openweathermap.org/data/2.5/weather';
+const apiKey = '83faa7bd951ff67a5fb8d65e17548a92';
+function getWeatherData(city){
+    const url = `${apiBase}?q=${city}&units=metric&appid=${apiKey}`;
+    fetch(url)
+        .then(response => response.json())
+        .then(data => updateUi(data))
+}
+
+searchBtn.addEventListener('click',function(){
+    const inputCity = document.getElementById('input-city').value;
+   getWeatherData(inputCity);
+})
+
+function updateUi(data){
+    document.getElementById('city-name').innerText = data.name || "Unknown Location!";
+
+    document.getElementById('temp').innerText= data.main.temp
+
+    document.getElementById('sky').innerText= data.weather[0].main;
+    document.getElementById('input-city').value = "";
+}
+        
+    </script>
+
+</body>
+
+</html>
